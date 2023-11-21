@@ -1,32 +1,28 @@
 <template>
   <a-layout class="layout">
-    <a-layout>
-      <a-layout>
-        <a-layout-sider v-if="menu" class="layout-sider" :breakpoint="'xl'" :collapsed="collapse" :collapsible="true"
-          :width="menuWidth" :collapsed-width="menuWidth" :hide-trigger="true" @collapse="setCollapsed">
-          <div class="menu-wrapper">
-            <div class="left-side center">
-              <User />
-            </div>
-            <Menu />
-          </div>
-        </a-layout-sider>
+    <a-layout-sider v-if="menu" class="layout-sider" :breakpoint="'xl'" :collapsed="collapse" :collapsible="true"
+      :width="menuWidth" :collapsed-width="menuWidth" :hide-trigger="true" @collapse="setCollapsed">
+      <div class="menu-wrapper">
+        <div class="left-side center">
+          <User />
+        </div>
+        <Menu />
+      </div>
+    </a-layout-sider>
 
-        <a-layout class="layout-content" :style="paddingStyle" style="box-sizing: border-box">
-          <div v-if="navbar" class="layout-navbar" :style="{ height: navbarHeight }">
-            <!-- <NavBar /> -->
-            <AccountList></AccountList>
-          </div>
-          <a-layout-content class="main">
-            <router-view v-slot="{ Component }">
-              <keep-alive :include="cacheList">
-                <component :is="Component" />
-              </keep-alive>
-            </router-view>
-          </a-layout-content>
-          <Footer v-if="footer" />
-        </a-layout>
-      </a-layout>
+    <a-layout class="layout-content" :style="paddingStyle" style="box-sizing: border-box">
+      <div v-if="navbar" class="layout-navbar" :style="{ height: navbarHeight }">
+        <!-- <NavBar /> -->
+        <AccountList></AccountList>
+      </div>
+      <a-layout-content class="main">
+        <router-view v-slot="{ Component }">
+          <keep-alive :include="cacheList">
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
+      </a-layout-content>
+      <Footer v-if="footer" />
     </a-layout>
   </a-layout>
 </template>
