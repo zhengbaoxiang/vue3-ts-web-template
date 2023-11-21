@@ -132,16 +132,7 @@ const reset = () => {
   pagination.pageIndex = 1;
   fetchData();
 };
-// search();
-let value = tableData.value
-console.log('-tableData_value>',value)
-console.log('-typeof>',typeof value)
-console.log('->',value.length)
-
-for (const _record of value) {
-
-}
-
+search();
 
 //  表单内选项
 let roleList: any[] = [];

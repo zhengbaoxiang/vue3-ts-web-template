@@ -12,7 +12,7 @@
         <a-input v-model="pageForm.WorkNumber" allow-clear />
       </a-form-item>
       <a-form-item field="RealName" label="姓名" feedback>
-        <a-input v-model="pageForm.RealName" allow-clear max-length="10" />
+        <a-input v-model="pageForm.RealName" allow-clear :max-length="10" />
       </a-form-item>
       <a-form-item field="PhoneNumber" label="手机号" feedback>
         <a-input v-model="pageForm.PhoneNumber" allow-clear />
