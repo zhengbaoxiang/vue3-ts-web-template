@@ -1,0 +1,117 @@
+import { AnyObject } from "@/types/global";
+
+export const Emoji: any = {
+  "common": {
+    "[微笑]": `emotion/common_sb_emot01.png`,
+    "[大笑]": `emotion/common_sb_emot02.png`,
+    "[鼓掌]": `emotion/common_sb_emot03.png`,
+    "[为什么]": `emotion/common_sb_emot04.png`,
+    "[哭]": `emotion/common_sb_emot05.png`,
+    "[怒]": `emotion/common_sb_emot06.png`,
+    "[滴汗]": `emotion/common_sb_emot07.png`,
+    "[俏皮]": `emotion/common_sb_emot08.png`,
+    "[傲]": `emotion/common_sb_emot09.png`,
+    "[好困惑]": `emotion/common_sb_emot10.png`,
+    "[兴奋]": `emotion/common_sb_emot11.png`,
+    "[加油]": `emotion/common_sb_emot12.png`,
+    "[困顿]": `emotion/common_sb_emot13.png`,
+    "[想一下]": `emotion/common_sb_emot14.png`,
+    "[撇嘴]": `emotion/common_sb_emot15.png`,
+    "[色]": `emotion/common_sb_emot16.png`,
+    "[发呆]": `emotion/common_sb_emot17.png`,
+    "[得意]": `emotion/common_sb_emot18.png`,
+    "[害羞羞]": `emotion/common_sb_emot19.png`,
+    "[大哭]": `emotion/common_sb_emot20.png`,
+    "[呲牙]": `emotion/common_sb_emot21.png`,
+    "[惊讶]": `emotion/common_sb_emot22.png`,
+    "[囧]": `emotion/common_sb_emot23.png`,
+    "[抓狂]": `emotion/common_sb_emot24.png`,
+    "[偷笑]": `emotion/common_sb_emot25.png`,
+    "[愉快]": `emotion/common_sb_emot26.png`,
+    "[憨笑]": `emotion/common_sb_emot27.png`,
+    "[晕]": `emotion/common_sb_emot28.png`,
+    "[再见]": `emotion/common_sb_emot29.png`,
+    "[坏笑]": `emotion/common_sb_emot30.png`,
+    "[左哼哼]": `emotion/common_sb_emot31.png`,
+    "[右哼哼]": `emotion/common_sb_emot32.png`,
+    "[哈欠]": `emotion/common_sb_emot33.png`,
+    "[委屈]": `emotion/common_sb_emot34.png`,
+    "[快哭了]": `emotion/common_sb_emot35.png`,
+    "[亲]": `emotion/common_sb_emot36.png`,
+    "[可怜]": `emotion/common_sb_emot37.png`,
+    "[口罩]": `emotion/common_sb_emot38.png`,
+    "[笑哭]": `emotion/common_sb_emot39.png`,
+    "[惊吓]": `emotion/common_sb_emot40.png`,
+    "[哼]": `emotion/common_sb_emot41.png`,
+    "[捂脸]": `emotion/common_sb_emot42.png`,
+    "[奸笑]": `emotion/common_sb_emot43.png`,
+    "[吃瓜]": `emotion/common_sb_emot44.png`,
+    "[旺柴]": `emotion/common_sb_emot45.png`,
+    "[围观]": `emotion/common_sb_emot46.png`,
+    "[摊手]": `emotion/common_sb_emot47.png`,
+    "[爱心]": `emotion/common_sb_emot48.png`,
+    "[献花]": `emotion/common_sb_emot49.png`,
+    "[福]": `emotion/common_sb_emot50.png`,
+    "[拜神]": `emotion/common_sb_emot51.png`,
+    "[胜利]": `emotion/common_sb_emot52.png`,
+    "[赞]": `emotion/common_sb_emot53.png`,
+    "[握手]": `emotion/common_sb_emot54.png`,
+    "[抱拳]": `emotion/common_sb_emot55.png`,
+    "[勾引]": `emotion/common_sb_emot56.png`,
+    "[拳头]": `emotion/common_sb_emot57.png`,
+    "[OKOK]": `emotion/common_sb_emot58.png`,
+    "[强壮]": `emotion/common_sb_emot59.png`,
+    "[毛估估]": `emotion/common_sb_emot60.png`,
+    "[亏大了]": `emotion/common_sb_emot61.png`,
+    "[赚大了]": `emotion/common_sb_emot62.png`,
+    "[牛]": `emotion/common_sb_emot63.png`,
+    "[成交]": `emotion/common_sb_emot65.png`,
+    "[财力]": `emotion/common_sb_emot66.png`,
+    "[护城河]": `emotion/common_sb_emot67.png`,
+    "[复盘]": `emotion/common_sb_emot68.png`,
+    "[买入]": `emotion/common_sb_emot69.png`,
+    "[卖出]": `emotion/common_sb_emot70.png`,
+    "[满仓]": `emotion/common_sb_emot71.png`,
+    "[空仓]": `emotion/common_sb_emot72.png`,
+    "[抄底]": `emotion/common_sb_emot73.png`,
+    "[看多]": `emotion/common_sb_emot74.png`,
+    "[看空]": `emotion/common_sb_emot75.png`,
+    "[加仓]": `emotion/common_sb_emot76.png`,
+    "[减仓]": `emotion/common_sb_emot77.png`,
+    "[上涨]": `emotion/common_sb_emot78.png`,
+    "[下跌]": `emotion/common_sb_emot79.png`,
+    "[财神]": `emotion/common_sb_emot80.png`,
+    "[火箭]": `emotion/common_sb_emot81.png`,
+    "[龙头]": `emotion/common_sb_emot82.png`,
+    "[韭菜]": `emotion/common_sb_emot83.png`,
+    "[面]": `emotion/common_sb_emot84.png`,
+    "[泡沫]": `emotion/common_sb_emot85.png`,
+    "[惨!关灯吃面]": `emotion/common_sb_emot86.png`,
+    "[666]": `emotion/common_sb_emot87.png`,
+    "[叹气]": `emotion/common_sb_emot88.png`,
+    "[让我看看]": `emotion/common_sb_emot89.png`,
+    "[发财]": `emotion/common_sb_emot90.png`,
+    "[主力]": `emotion/common_sb_emot91.png`,
+    "[梭哈]": `emotion/common_sb_emot92.png`,
+    "[国家队]": `emotion/common_sb_emot93.png`,
+    "[中签]": `emotion/common_sb_emot94.png`,
+    "[干杯]": `emotion/common_sb_emot95.png`,
+  }
+}
+
+
+const EmojiList: AnyObject[] = []
+try {
+  for (let key in Emoji.common) {
+    const urlObj = new URL(`../assets/${Emoji.common[key]}`, import.meta.url);
+    const obj = {
+      code: key,
+      path: urlObj.href
+    }
+    EmojiList.push(obj)
+  }
+} catch (error) {
+  console.log('-error>', error)
+}
+// 获取表情type列表
+export { EmojiList }

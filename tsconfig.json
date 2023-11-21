@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": false,
+    "sourceMap": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["es2020", "dom"]
+  },
+  "include": ["src/**/*", "src/**/*.vue"]
+}
