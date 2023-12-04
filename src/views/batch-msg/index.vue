@@ -1,7 +1,7 @@
 <!--
  * @Date: 2023-07-25 09:56:43
  * @LastEditors: zbx
- * @LastEditTime: 2023-09-14 14:14:29
+ * @LastEditTime: 2023-12-04 16:47:05
  * @descript: 文件描述
 -->
 <template>
@@ -102,12 +102,3 @@ const toAdd = () => {
 
 
 </script>
-<style lang="less" scoped>
-.container {
-  padding: 10px 15px;
-}
-
-.operations {
-  display: flex;
-}
-</style>
