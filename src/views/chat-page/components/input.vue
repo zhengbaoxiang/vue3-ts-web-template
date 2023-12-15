@@ -1,7 +1,7 @@
 <!--
  * @Date: 2023-07-28 11:09:34
  * @LastEditors: zbx
- * @LastEditTime: 2023-09-25 17:58:57
+ * @LastEditTime: 2023-12-05 15:31:31
  * @descript: 文件描述
 -->
 <template>
@@ -11,18 +11,38 @@
         <icon-message />
       </span>
       <span class="picture">
-        <input type="file" name="imgFile" @change="imgFileChange" accept="image/jpeg,image/jpg,image/bmp,image/png" />
+        <input
+          type="file"
+          name="imgFile"
+          @change="imgFileChange"
+          accept="image/jpeg,image/jpg,image/bmp,image/png"
+        />
       </span>
       <!-- <span class="fileSelect">
         <input type="file" name="imgFile" @change="videoFileChange" accept="video/mp4" />
       </span> -->
-      <span class="emotion1" @click.stop="toEmotion" unselectable="on" onmousedown="return false;"></span>
+      <span
+        class="emotion1"
+        @click.stop="toEmotion"
+        unselectable="on"
+        onmousedown="return false;"
+      ></span>
     </div>
     <!-- @keyup="editChange(arguments[0], currentUser)" -->
     <!-- contenteditable="plaintext-only" -->
-    <div ref="inputRef" class="editDiv" draggable="false" contenteditable="true" :id="currentUser.currentId"
-      :text="inputValue" placeholder="请输入" @input="editChange($event)" @blur="divBLur"
-      @keydown.enter.prevent="enterKeyDown" style=""></div>
+    <div
+      ref="inputRef"
+      class="editDiv"
+      draggable="false"
+      contenteditable="true"
+      :id="currentUser.currentId"
+      :text="inputValue"
+      placeholder="请输入"
+      @input="editChange($event)"
+      @blur="divBLur"
+      @keydown.enter.prevent="enterKeyDown"
+      style=""
+    ></div>
     <button class="send" id="btn2" @click="send">发送</button>
     <div v-show="emotionfag">
       <Emotion @selecEmo="selecEmo" />
@@ -187,12 +207,12 @@ const send = () => {
   }
 };
 const imgFileChange = (e: AnyObject) => {
-  console.log('-e?.target>', e?.target.files)
-
-  if (e?.target?.files.length === 0) return
-  if (!e?.target?.files[0].type.includes('image')) {
-    Message.error('不支持当前格式的文件，请选择图片')
-    return
+  console.log('-e?.target>', { target: e?.target });
+  const files = e?.target.files || [];
+  if (files.length === 0) return;
+  if (!files[0].type.includes('image')) {
+    Message.error('不支持当前格式的文件，请选择图片');
+    return;
   }
 
   const params = {
@@ -205,6 +225,7 @@ const imgFileChange = (e: AnyObject) => {
     file: e?.target?.files[0],
   };
   comStore.beforeSendMsg(params);
+  e.target.value = '';
 };
 const videoFileChange = (e: AnyObject) => {
   const params = {
@@ -232,7 +253,7 @@ const openhis = () => {
     height: 30px;
     padding: 0 5px;
 
-    &>span {
+    & > span {
       display: inline-block;
       margin: 5px;
       width: 20px;

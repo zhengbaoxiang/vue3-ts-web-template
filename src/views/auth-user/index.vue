@@ -1,7 +1,7 @@
 <!--
  * @Date: 2023-07-17 15:37:17
  * @LastEditors: zbx
- * @LastEditTime: 2023-11-21 16:59:38
+ * @LastEditTime: 2023-11-07 13:27:58
  * @descript: 文件描述
 -->
 <template>
@@ -106,7 +106,6 @@ const fetchData = async () => {
     pagination.total = count;
     pagination.pageIndex = params.pageIndex;
   } catch (err) {
-    console.log('-接口，catch>',err)
     // you can report use errorHandler or other
   } finally {
     setLoading(false);

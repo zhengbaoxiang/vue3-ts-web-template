@@ -1,7 +1,7 @@
 <!--
  * @Date: 2023-07-28 11:09:34
  * @LastEditors: zbx
- * @LastEditTime: 2023-09-11 11:13:59
+ * @LastEditTime: 2023-11-28 17:08:53
  * @descript: 文件描述
 -->
 <template>
@@ -9,8 +9,12 @@
     <div class="content">
       <div class="headTitle">
         <span class="name bold">{{ currentUser.userName }}</span>
-        <span class="text" style="font-size: 14px;margin-left: 10px;vertical-align:sub">{{
-          `(UID:${currentUser.passportId})` }} {{ currentUser.isCanceled ? '【账号已注销】' : '' }}</span>
+        <span
+          class="text"
+          style="font-size: 14px; margin-left: 10px; vertical-align: sub"
+          >{{ `(UID:${currentUser.passportId})` }}
+          {{ currentUser.isCanceled ? '【账号已注销】' : '' }}</span
+        >
       </div>
       <div class="scrollConatin">
         <ul class="chatHistory" ref="scrollZoneRef">
@@ -23,7 +27,7 @@
         <span class="close" @click="clearQuto">
           <icon-close size="16" />
         </span>
-        <MsgQuto :qutoObj="currentUser.quto"></MsgQuto>
+        <MsgQuto :qutoObj="currentUser.quto || {}"></MsgQuto>
       </div>
     </div>
   </div>
@@ -33,8 +37,9 @@ import { ref, reactive, computed, watch, onMounted, watchEffect } from 'vue';
 import { useAppStore, useUserStore, useComStore } from '@/store';
 import { Message, Modal } from '@arco-design/web-vue';
 import { Pagination, Options, AnyObject } from '@/types/global';
-import MsgItem from './msgItem.vue';
+import { RealMsg } from '@/store/msgParse';
 import EventBus from '@/utils/eventBus';
+import MsgItem from './msgItem.vue';
 import MsgQuto from './msgQuto.vue';
 
 const comStore = useComStore();
@@ -43,45 +48,74 @@ const currentUser = computed(() => {
 });
 
 const msgList = computed(() => {
-  return comStore.currentUser.recordList;
+  const recordList = comStore.currentUser.recordList || [];
+  // 增加时间提示
+  let result = [];
+  recordList.forEach((item, index) => {
+    let msgItem: RealMsg = recordList[index];
+    let curSendDateTime = msgItem.sendDateTime;
+
+    let preMsgItem = recordList[index - 1];
+    let preSendDateTime = (preMsgItem && preMsgItem.sendDateTime) || 0;
+
+    if (preSendDateTime + 120 * 1000 < curSendDateTime) {
+      let timeMsg = {
+        content: { Text: '' },
+        contentType: 104,
+        msgId: 'time_' + msgItem.sendDateTime,
+        msgIndexID: msgItem.msgIndexID || 0,
+        receiverId: '',
+        senderId: '',
+        sendDateTime: msgItem.sendDateTime,
+      };
+      result.push(timeMsg);
+      result.push(msgItem);
+    } else {
+      result.push(msgItem);
+    }
+  });
+
+  console.log('computed_result:', result.length);
+
+  return result;
 });
 
 watch(comStore.currentUser.recordList, (newVal) => {
-  console.log('-watch>');
+  console.log('-watch_recordList>');
 });
-
 
 const clearQuto = () => {
   comStore.currentUser.quto = null;
 };
 
 onMounted(() => {
-  console.log('-chatContain_mounted>', 1)
-  initEvent()
+  console.log('-chatContain_mounted>', 1);
+  initEvent();
 });
 
-
 const initEvent = () => {
-  let box: HTMLDivElement | null = document.querySelector(".scrollConatin");
-  box?.addEventListener("scroll", function (e) {
+  let box: HTMLDivElement | null = document.querySelector('.scrollConatin');
+  box?.addEventListener('scroll', function (e) {
     // 距顶部
     let scrollTop = e?.target['scrollTop'];
     if (scrollTop === 0) {
-      console.log('-scrollTop>', scrollTop)
-      const topMsg = msgList.value[0]
-      if (!topMsg) return
-      const msgIndexID = topMsg.msgIndexID ? topMsg.msgIndexID : 0
-      comStore.scroll_get_his_msgLisg(comStore.currentUser, msgIndexID)
-      const topMsgEle: HTMLElement | null = document.getElementById(topMsg.msgId)
-      topMsgEle?.scrollIntoView()
+      console.log('-scrollTop>', scrollTop);
+      const topMsg = msgList.value[0];
+      if (!topMsg) return;
+      const msgIndexID = topMsg.msgIndexID ? topMsg.msgIndexID : 0;
+      comStore.scroll_get_his_msgLisg(comStore.currentUser, msgIndexID);
+      const topMsgEle: HTMLElement | null = document.getElementById(
+        topMsg.msgId
+      );
+      topMsgEle?.scrollIntoView();
     }
-  })
+  });
 
   EventBus.on('scrollMsgList', (params: any) => {
-    const { scroll, milliseconds } = params
+    const { scroll, milliseconds } = params;
     scrollToView(scroll, milliseconds);
   });
-}
+};
 // 收到消息后，滚动消息列表至最底部
 const scrollZoneRef = ref<HTMLUListElement | null>(null);
 const scrollToView = (flag: boolean, milliseconds: number = 0) => {
@@ -89,10 +123,13 @@ const scrollToView = (flag: boolean, milliseconds: number = 0) => {
     const cr = scrollZoneRef.value?.getBoundingClientRect();
     if ((cr && cr.bottom < document.body.clientHeight) || flag) {
       // 滚动至最后一条消息
-      const bottomMsg = msgList.value && msgList.value[msgList.value.length - 1]
-      if (!bottomMsg) return
-      const bottomMsgEle: HTMLElement | null = document.getElementById(bottomMsg.msgId)
-      bottomMsgEle?.scrollIntoView()
+      const bottomMsg =
+        msgList.value && msgList.value[msgList.value.length - 1];
+      if (!bottomMsg) return;
+      const bottomMsgEle: HTMLElement | null = document.getElementById(
+        bottomMsg.msgId
+      );
+      bottomMsgEle?.scrollIntoView();
     }
   }, milliseconds);
 };
@@ -135,7 +172,6 @@ const scrollToView = (flag: boolean, milliseconds: number = 0) => {
         line-height: 30px;
         vertical-align: middle;
       }
-
     }
 
     .scrollConatin {
