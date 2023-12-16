@@ -36,7 +36,7 @@ import NavBar from '@/components/navbar/index.vue';
 import AccountList from '@/components/account-list/index.vue';
 import Menu from '@/components/menu/index.vue';
 import Footer from '@/components/footer/index.vue';
-import usePermission from '@/hooks/permission';
+import hasPermission from '@/hooks/permission';
 
 export default defineComponent({
   components: {
@@ -51,7 +51,6 @@ export default defineComponent({
     const userStore = useUserStore();
     const router = useRouter();
     const route = useRoute();
-    const permission = usePermission();
     const navbarHeight = `121px`; // 原60px
     const navbar = computed(() => appStore.navbar);
     const menu = computed(() => appStore.menu);
@@ -79,7 +78,7 @@ export default defineComponent({
     watch(
       () => userStore.role,
       (roleValue) => {
-        if (roleValue && !permission.accessRouter(route))
+        if (roleValue && !hasPermission(route,userStore.access))
           router.push({ name: 'notFound' });
       }
     );

@@ -7,15 +7,15 @@ import {
   RouteRecordRaw,
   RouteRecordNormalized,
 } from 'vue-router';
-import { useAppStore } from '@/store';
-import usePermission from '@/hooks/permission';
+import { useAppStore ,useUserStore} from '@/store';
+import hasPermission from '@/hooks/permission';
 
 export default defineComponent({
   emit: ['collapse'],
   setup() {
     const { t } = useI18n();
     const appStore = useAppStore();
-    const permission = usePermission();
+    const userStore = useUserStore();
     const router = useRouter();
     const route = useRoute();
     const collapsed = ref(false);
@@ -30,7 +30,7 @@ export default defineComponent({
         if (!_routes) return null;
         const collector: any = _routes.map((element) => {
           // no access
-          if (!permission.accessRouter(element)) {
+          if (!hasPermission(element,userStore.access)) {
             return null;
           }
 
@@ -79,7 +79,7 @@ export default defineComponent({
     watch(
       route,
       (newVal) => {
-        if (newVal.meta.requiresAuth && !newVal.meta.hideInMenu) {
+        if (!newVal.meta.hideInMenu) {
           const key = (newVal.matched[2] || newVal.matched[1])?.name as string;
           selectedKey.value = [key];
         }

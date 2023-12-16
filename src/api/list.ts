@@ -1,4 +1,6 @@
 import axios from 'axios';
+import myAxios from '@/api/myAxios';
+
 import qs from 'query-string';
 import { Options } from '@/types/global';
 

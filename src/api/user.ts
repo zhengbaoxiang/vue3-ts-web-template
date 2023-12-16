@@ -6,6 +6,8 @@
  */
 import { AnyObject } from '@/types/global';
 import axios from 'axios';
+import myAxios from '@/api/myAxios';
+
 export interface LoginData {
   username: string;
   password: string;
@@ -13,35 +15,35 @@ export interface LoginData {
 
 // 函数
 export function login(data: LoginData) {
-  return axios.post('/user/login', data);
+  return myAxios.post('/user/login', data);
 }
 // 函数赋值变量
 export const logout = () => {
-  return axios.post('/user/logout');
+  return myAxios.post('/user/logout');
 }
 export function getUserInfo() {
-  return axios.post('/user/getUserInfo');
+  return myAxios.post('/user/getUserInfo');
 }
 export function getAccountAndAutoOnline(data: { "autoOnline": boolean }) {
-  return axios.post('/user/getAccountAndAutoOnline', data);
+  return myAxios.post('/user/getAccountAndAutoOnline', data);
 }
 export function getAccounts(data: { "autoOnline": boolean }) {
-  return axios.post('/user/getAccounts', data);
+  return myAxios.post('/user/getAccounts', data);
 }
 export function getOffline(data: { accountId: string }) {
-  return axios.post('/user/getOffline', data);
+  return myAxios.post('/user/getOffline', data);
 }
 export function getOnline(data: { accountId: string }) {
-  return axios.post('/user/getOnline', data);
+  return myAxios.post('/user/getOnline', data);
 }
 export function GetPassportUsers(data: { keyword: string }) {
-  return axios.post('/user/GetPassportUsers', data);
+  return myAxios.post('/user/GetPassportUsers', data);
 }
 export function StartChat(data: AnyObject) {
-  return axios.post('/user/StartChat', data);
+  return myAxios.post('/user/StartChat', data);
 }
 
 export function IsUserCanceled(data: AnyObject) {
-  return axios.post('/user/IsUserCanceled', data);
+  return myAxios.post('/user/IsUserCanceled', data);
 }
 

@@ -1,14 +1,9 @@
-/*
- * @Date: 2023-07-14 14:13:43
- * @LastEditors: zbx
- * @LastEditTime: 2023-11-21 17:23:47
- * @descript: 文件描述
- */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Message, Modal } from '@arco-design/web-vue';
 import { getToken, setToken } from '@/utils/tools'
+
 import globalConfig from '@/config';
 import { useComStore, useUserStore } from '@/store';
+import { Message, Modal } from '@arco-design/web-vue';
 
 export interface HttpResponse<T = any> {
     data: T;
@@ -44,37 +39,42 @@ axios.interceptors.request.use(
 // add response interceptors
 axios.interceptors.response.use(
     (response: AxiosResponse) => {
-        const data: HttpResponse | any = response.data;
-        // if the custom code is not 200, it is judged as an error.
-        if (data.result != undefined) {
-            if (data.result !== 1) {
+        const resData: HttpResponse | any = response.data;
+
+        if (resData.result != undefined) {
+            if (resData.result == 1) {
+                // 接口正常返回
+                return Promise.resolve(resData);
+
+            } else if (resData.result === -1) {
+                // 未登录处理逻辑
+                Modal.error({
+                    title: '提示',
+                    content: '当前token已失效，请重新登录',
+                    okText: '确定',
+                    async onOk() {
+                        setToken('')
+                        const url = `${globalConfig.loginUrl}`;
+                        // const url = `${config.logoutUrl}?ssoToken=${token}`;
+                        window.location.href = url
+                    },
+                });
+            } else {
+                // 其它业务错误，直接提示消息
                 Message.error({
-                    content: data.msg || data.message || '接口异常',
+                    content: resData.msg || resData.message || '接口逻辑错误',
                     duration: 5 * 1000,
                 });
-                if (data.result === -1) {
-                    Modal.error({
-                        title: '提示',
-                        content: '当前token已失效，请重新登录',
-                        okText: '确定',
-                        async onOk() {
-                            setToken('')
-                            const url = `${globalConfig.loginUrl}`;
-                            // const url = `${config.logoutUrl}?ssoToken=${token}`;
-                            window.location.href = url
-                        },
-                    });
-                }
-                return Promise.reject(new Error(data.msg || data.message || 'Error'));
+                return Promise.reject(resData);
             }
-            return Promise.resolve(data);
-        }else if(data.code == 200){
-            return Promise.resolve(data);
+        } else if (resData.code == 200) {
+            return Promise.resolve(resData);
         } else {
             return Promise.resolve(response);
         }
     },
     (error) => {
+        console.log('-error>',error)
         Message.error({
             content: error.msg || '服务器异常',
             duration: 5 * 1000,

@@ -26,7 +26,7 @@ export default {
       meta: {
         locale: 'menu.dashboard.monitor',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
     /** simple end */

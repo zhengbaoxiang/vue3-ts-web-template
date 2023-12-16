@@ -51,7 +51,7 @@ export default [
       locale: '用户权限',
       icon: 'icon-user',
       requiresAuth: true,
-      roles: ['Admin'],
+      roles: ['*'],
     },
   },
 
@@ -63,7 +63,7 @@ export default [
       locale: '账户管理',
       icon: 'icon-settings',
       requiresAuth: true,
-      roles: ['Admin'],
+      roles: ['*'],
     },
   }
 ];

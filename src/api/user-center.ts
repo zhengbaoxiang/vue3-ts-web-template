@@ -1,4 +1,5 @@
 import axios from 'axios';
+import myAxios from '@/api/myAxios';
 
 export interface MyProjectRecord {
   id: number;
@@ -12,7 +13,7 @@ export interface MyProjectRecord {
   }[];
 }
 export function queryMyProjectList() {
-  return axios.post('/api/user/my-project/list');
+  return myAxios.post('/api/user/my-project/list');
 }
 
 export interface MyTeamRecord {
@@ -22,7 +23,7 @@ export interface MyTeamRecord {
   peopleNumber: number;
 }
 export function queryMyTeamList() {
-  return axios.post('/api/user/my-team/list');
+  return myAxios.post('/api/user/my-team/list');
 }
 
 export interface LatestActivity {
@@ -36,7 +37,7 @@ export function queryLatestActivity() {
 }
 
 export function saveUserInfo() {
-  return axios.post('/api/user/save-info');
+  return myAxios.post('/api/user/save-info');
 }
 
 export interface BasicInfoModel {

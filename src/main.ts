@@ -16,7 +16,7 @@ import '@/assets/style/global.less';
 import '@/api/interceptor';
 import './mock';
 
-console.log('-import.meta>', import.meta.env)
+// console.log('-import.meta>', import.meta.env)
 
 const app = createApp(App);
 

@@ -6,7 +6,7 @@ export default mergeConfig(
         ...baseConfig,
         base: '/front/', // 公共基础路径目录
         mode: 'production',
-        // 定义全局常量替换方式。其中每项在开发环境下会被定义在全局，而在构建时被静态替换。
+        // 定义全局常量替换方式。其中每项在开发环境下会被定义在全局，而在构建时被静态替换'process.env'。
         // 通过package中切换不同的配置文件，可以不使用.env环境变量
         define: {
             'process.env': {

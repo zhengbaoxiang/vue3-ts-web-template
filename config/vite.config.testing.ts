@@ -39,9 +39,9 @@ export default mergeConfig(
                 // },
 
                 output: {
+                    //  对象、或者为一个函数
                     // 拆分模块打包，将index.js文件，从3.3M缩小到1.3M,同时发现echarts模块大小 1.1M, arco为800kb
                     // 虽然减小了体积，因为模块之间互相依赖，不一定更快。比如页面依赖arco模块
-                    //  或者为一个函数
                     manualChunks: {
                         echarts: ['echarts','vue-echarts'],
                         vue_i18n: ['vue-i18n'],

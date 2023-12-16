@@ -55,34 +55,39 @@ class HttpRequest {
         )
         // 拦截响应
         instance.interceptors.response.use(
-            (response: AxiosResponse) => {
+            (response: AxiosResponse<HttpResponse>) => {
                 // dosomething 正常拿到接口响应，结构处理
                 const resData: HttpResponse | any = response.data
 
                 // result判断
-                if (resData.result == 1) {
-                    return Promise.resolve(resData);
-                } else if (resData.result === -1) {
-                    Modal.error({
-                        title: '提示',
-                        content: '当前token已失效，请重新登录',
-                        okText: '确定',
-                        async onOk() {
-                            setToken('')
-                            const url = `${globalConfig.loginUrl}`;
-                            // const url = `${config.logoutUrl}?ssoToken=${token}`;
-                            window.location.href = url
-                        },
-                    });
-                    return Promise.reject(resData);
-                } else if (resData.result) {
-                    Message.error({
-                        content: resData.msg || resData.message || '接口异常',
-                        duration: 5 * 1000,
-                    });
-                    return Promise.reject(resData);
+                if (resData.result != undefined) {
+                    if (resData.result == 1) {
+                        // 接口正常返回
+                        return Promise.resolve(resData);
 
-                    // code判断
+                    } else if (resData.result === -1) {
+                        // 未登录处理逻辑
+                        Modal.error({
+                            title: '提示',
+                            content: '当前token已失效，请重新登录',
+                            okText: '确定',
+                            async onOk() {
+                                setToken('')
+                                const url = `${globalConfig.loginUrl}`;
+                                // const url = `${config.logoutUrl}?ssoToken=${token}`;
+                                window.location.href = url
+                            },
+                        });
+                        return Promise.reject(resData);
+                    } else {
+                        // 其它业务错误，直接提示消息
+                        console.log('-resData>', resData)
+                        Message.error({
+                            content: resData.msg || resData.message || '接口异常',
+                            duration: 5 * 1000,
+                        });
+                        return Promise.reject(resData);
+                    }
                 } else if (resData.code == 200) {
                     return Promise.resolve(resData);
 
@@ -137,7 +142,7 @@ export function getUserInfo(data) {
         method: 'post',
     })
 }
-// 用法 2
+// post简洁用法 2
 export function getList(data) {
     return myAxios.post('/manageSystuseremUser/getUserInfo', data)
 }

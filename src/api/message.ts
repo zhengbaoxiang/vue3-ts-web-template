@@ -1,4 +1,5 @@
 import axios from 'axios';
+import myAxios from '@/api/myAxios';
 
 export interface MessageRecord {
   id: number;

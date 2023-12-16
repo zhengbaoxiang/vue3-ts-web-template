@@ -96,7 +96,7 @@ export interface PostData {
 export interface Pagination {
   pageIndex: number;
   pageSize: number;
-  total: number;
+  total?: number;
 }
 
 export type TimeRanger = [string, string];

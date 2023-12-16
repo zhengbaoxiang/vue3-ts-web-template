@@ -1,4 +1,6 @@
 import axios from 'axios';
+import myAxios from '@/api/myAxios';
+
 import { GeneralChart } from '@/types/global';
 
 export interface ChartDataRecord {

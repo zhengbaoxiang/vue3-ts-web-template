@@ -5,34 +5,38 @@
  * @descript: 文件描述
  */
 
+import { RouteRecordRaw } from 'vue-router';
 import PageLayout from '@/layout/page-layout.vue';
 import appRoutes from './modules';
 
-export default [
-  {
-    path: '/',
-    name: 'home',
-    redirect: 'chat-page',
-    component: PageLayout,
-    children: appRoutes,
-  },
-  {
-    path: '/login',
-    name: 'login',
-    // component: () => import('@/views/login/accountLogin.vue'),
-    component: () => import('@/views/login/oaLogin.vue'),
-    meta: {
-      locale: '登录',
-      requiresAuth: false,
+const routes: RouteRecordRaw[] = [
+    {
+        path: '/',
+        name: 'home',
+        redirect: 'chat-page',
+        component: PageLayout,
+        children: appRoutes,
     },
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'notFound',
-    component: () => import('@/views/not-found/index.vue'),
-    meta: {
-      locale: '404',
-      requiresAuth: false,
-    }
-  },
+    {
+        path: '/login',
+        name: 'login',
+        // component: () => import('@/views/login/accountLogin.vue'),
+        component: () => import('@/views/login/oaLogin.vue'),
+        meta: {
+            locale: '登录',
+            requiresAuth: false,
+        },
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'notFound',
+        component: () => import('@/views/not-found/index.vue'),
+        meta: {
+            locale: '404 notFound',
+            requiresAuth: false,
+        }
+    },
 ]
+
+
+export default routes
