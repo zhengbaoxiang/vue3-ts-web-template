@@ -97,7 +97,7 @@ import { Message, Modal } from '@arco-design/web-vue';
 import useLoading from '@/hooks/loading';
 import { Pagination, Options, AnyObject } from '@/types/global';
 import { AccountApi, AccountRecord } from '@/api/account';
-import FormModal from './components/formModal.vue';
+import FormModal from '@/views/account/components/formModal.vue';
 const { loading, setLoading } = useLoading(true);
 
 const basePagination: Pagination = {

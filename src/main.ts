@@ -7,8 +7,8 @@ import '@arco-design/web-vue/dist/arco.css';
 import store from './store';
 import router from './router';
 import i18n from './locale';
-import App from './App.vue';
 
+import App from './App.vue';
 import globalComponents from '@/components';
 import directive from './directive';
 

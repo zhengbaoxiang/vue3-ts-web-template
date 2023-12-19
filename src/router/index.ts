@@ -11,7 +11,7 @@ import routes from './routes';
 import globalConfig from '@/config';
 import { getToken, setToken, setTitle } from '@/utils/tools';
 import { useUserStore } from '@/store';
-import  hasPermission  from '@/hooks/permission';
+import hasPermission from '@/hooks/permission';
 
 const { title } = globalConfig
 const HOME_NAME = 'home'
@@ -52,19 +52,24 @@ router.beforeEach(async (to, from, next) => {
     } else if (['401', '403', '404'].includes(to.name as string)) {
         next()
     } else {
-        try {
-            const access = await userStore.getUserInfo();
-            hasAuth(to, access, next);
-        } catch (error) {
-            // 鉴权接口报错，是否回到登录页？
-            console.log('-error>', error)
-            next({ name: '404' });
+        if (userStore.hasGetInfo) {
+            hasAuth(to, userStore.access,next);
+        } else {
+            try {
+                const access = await userStore.getUserInfo();
+                hasAuth(to, access, next);
+            } catch (error) {
+                // 鉴权接口报错，是否回到登录页？
+                console.log('-error>', error)
+                next({ name: '404' });
+            }
         }
+
     }
 });
 
-const hasAuth = async (to: any, access: [], next: any) => {
-    if (hasPermission(to,access)) await next();
+const hasAuth = async (to: any, access: string[], next: any) => {
+    if (hasPermission(to, access)) await next();
     else {
         const destination = { name: '403' };
         await next(destination);

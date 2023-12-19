@@ -1,11 +1,5 @@
-<!--
- * @Date: 2023-07-25 09:56:43
- * @LastEditors: zbx
- * @LastEditTime: 2023-12-15 16:09:12
- * @descript: 文件描述
--->
 <template>
-    <div class="container">
+    <div class="batchContainer">
         <a-tabs :type="'line'" :size="'medium'" lazy-load v-model:active-key="curKey" default-active-key="draft"
             @change="tabChange">
             <template #extra>
@@ -111,12 +105,6 @@ const showPreview = (params) => {
 }
 
 </script>
-<style lang="less" scoped>
-.container {
-    padding: 10px 15px;
-}
-
-.operations {
-    display: flex;
-}
+<style lang="less">
+@import "./common.less";
 </style>

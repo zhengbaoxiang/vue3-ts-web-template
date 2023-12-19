@@ -1,7 +1,7 @@
 <!--
  * @Date: 2023-07-18 17:48:30
  * @LastEditors: zbx
- * @LastEditTime: 2023-12-15 17:43:21
+ * @LastEditTime: 2023-12-19 10:03:00
  * @descript: 文件描述
 -->
 <template>
@@ -12,7 +12,12 @@
             <a-avatar :size="34" :image-url="logoUrl" class="headImg"></a-avatar>
             <div v-if="batchObj.ContentType === 111" class="cardCon">
                 <div class="articleTitle">{{ batchObj.articleTitle }}</div>
-                <div class="articleDesc">{{ batchObj.articleDesc }}</div>
+                <div class="articleCenter">
+                    <div class="articleDesc">{{ batchObj.articleDesc }}</div>
+                    <div class="imgCon">
+                        <a-avatar :size="40" :image-url="articleImg" shape="square" class=" logoIcon"></a-avatar>
+                    </div>
+                </div>
                 <div class="source">
                     <a-avatar :size="18" :image-url="logoUrl" class="logoIcon"></a-avatar>
                     <span class="footTitle">东方财富</span>
@@ -46,6 +51,7 @@ import { AnyObject } from '@/types/global';
 import useLoading from '@/hooks/loading';
 
 import logoUrl from "@/assets/images/logo.png"
+import articleImg from "@/assets/images/articleImg.png"
 import { formatTime } from '@/utils/tools';
 const { loading, setLoading } = useLoading(false);
 
@@ -61,7 +67,6 @@ const showAppPreview = (data: AnyObject) => {
         UpdateTime: data.UpdateTime || formatTime(new Date().getTime()),
         ContentType: data.ContentType || 110,
         Text: data.Text || data.Content,
-        articleDesc: data.articleDesc.length > 50 ? data.articleDesc.slice(0, 50) + '...' : data.articleDesc,
         imageList: data.imageList || [
 
             {
@@ -114,7 +119,6 @@ defineExpose({
     }
 
     .previewCon {
-        overflow: auto;
         position: relative;
 
         // background-color: #0f0f0f;
@@ -159,6 +163,10 @@ defineExpose({
             font-size: 16px;
         }
 
+        .cardCon .articleCenter {
+            display: flex;
+        }
+
         .cardCon .articleDesc {
             font-size: 12px;
             color: grey;
@@ -166,6 +174,11 @@ defineExpose({
             max-height: 100px;
             text-overflow: ellipsis;
             overflow: hidden;
+        }
+
+        .cardCon .imgCon {
+            width: 50px;
+            margin: 5px 8px;
         }
 
         .cardCon .source {

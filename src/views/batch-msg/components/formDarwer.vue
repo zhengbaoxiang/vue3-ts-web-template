@@ -6,7 +6,7 @@
                 <a-input v-model="pageForm.SendAccount" :readonly="true" />
             </a-form-item>
             <a-form-item field="TargetUser" label="目标对象">
-                <a-input v-model="pageForm.TargetUser" :readonly="readonly" :max-length="40" show-word-limit />
+                <a-input v-model="pageForm.TargetUser" :readonly="readonly" :max-length="20" show-word-limit />
             </a-form-item>
             <a-form-item field="SendReason" label="发送目的" feedback>
                 <a-input v-model="pageForm.SendReason" :readonly="readonly" :max-length="40" show-word-limit />
@@ -63,20 +63,20 @@
 
             <template v-if="pageForm.ContentType == 111">
                 <a-form-item field="articleTitle" label="卡片标题" :rules="{ required: true, message: '请输入发送标题' }">
-                    <a-input v-model="pageForm.articleTitle" :readonly="readonly" :max-length="40" show-word-limit />
+                    <a-input v-model="pageForm.articleTitle" :readonly="readonly" :max-length="20" show-word-limit />
                 </a-form-item>
                 <a-form-item field="articleDesc" label="卡片摘要">
-                    <a-textarea :readonly="readonly" v-model="pageForm.articleDesc" :max-length="300" show-word-limit
+                    <a-textarea :readonly="readonly" v-model="pageForm.articleDesc" :max-length="40" show-word-limit
                         :auto-size="{
                             minRows: 5,
                             maxRows: 11,
                         }" />
                 </a-form-item>
                 <a-form-item field="articleAndroidUrl" label="链接-安卓" :rules="{ required: true, message: '请输入链接' }">
-                    <a-input v-model="pageForm.articleAndroidUrl" :readonly="readonly" :max-length="100" show-word-limit />
+                    <a-input v-model="pageForm.articleAndroidUrl" :readonly="readonly" show-word-limit />
                 </a-form-item>
                 <a-form-item field="articleIosUrl" label="链接-IOS" :rules="{ required: true, message: '请输入链接' }" v>
-                    <a-input v-model="pageForm.articleIosUrl" :readonly="readonly" :max-length="100" show-word-limit />
+                    <a-input v-model="pageForm.articleIosUrl" :readonly="readonly" show-word-limit />
                 </a-form-item>
             </template>
         </a-form>
@@ -282,14 +282,14 @@ const toAdd = (row: AnyObject) => {
         id: null,
         ...row,
         State: 0,
-        ContentType: 110,
-        Content: '',
-        Text: '',
-        imageList: [],
-        articleTitle: '',
-        articleDesc: '',
-        articleIosUrl: '',
-        articleAndroidUrl: '',
+        Content: '', // 拼接的消息内容
+        ContentType: 110, // 111 //  消息类型：110富文本;111卡片
+        Text: '', // 发送文本
+        imageList: [],// 图片
+        articleTitle: '',// 标题
+        articleDesc: '',// 摘要
+        articleIosUrl: '',// ios链接
+        articleAndroidUrl: '',// 安卓链接
         FileList: [],
     };
     formRef.value?.resetFields();

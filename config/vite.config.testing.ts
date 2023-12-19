@@ -2,6 +2,7 @@ import { mergeConfig } from 'vite';
 import baseConfig from './vite.config.base';
 import { resolve } from 'path';
 
+// 显式地通过 --config 命令行选项指定一个配置文件（相对于 cwd 路径进行解析）
 export default mergeConfig(
     {
         ...baseConfig,
@@ -31,6 +32,7 @@ export default mergeConfig(
             // 启用/禁用 CSS 代码拆分。
             // 当启用时，在异步 chunk 中导入的 CSS 将内联到异步 chunk 本身，并在其被加载时插入。
             cssCodeSplit:false, 
+            // 自定义底层的 Rollup 打包配置
             rollupOptions: {
                 // 多页面应用模式
                 // input: {

@@ -1,15 +1,3 @@
-<!--
- * @Date: 2023-07-25 10:56:04
- * @LastEditors: zbx
- * @LastEditTime: 2023-12-15 16:08:00
- * @descript: 文件描述
--->
-<!--
- * @Date: 2023-07-25 10:54:07
- * @LastEditors: zbx
- * @LastEditTime: 2023-12-15 09:29:47
- * @descript: 文件描述
--->
 <template>
     <a-card class="general-card pt15" title="">
         <a-form :model="queryInfo" class="form mb10" layout="inline" style="width: 100%">
@@ -50,24 +38,64 @@
                         <span>操作人：{{ item.SendOperatorName }}</span>
                     </a-col>
                 </a-row>
-                <p class="sendContent">
-                    <span class="spanTitle">消息内容：</span>
-                    <span class="content">
-                        <a-typography-text :ellipsis="{
-                            rows: 2,
-                            expandable: true,
-                            // showTooltip: true,
-                            showTooltip: {
-                                type: 'popover',
-                                props: {
-                                    style: { maxWidth: `600px` },
+                <template v-if="item.ContentType === 111">
+                    <a-row class="grid-demo">
+                        <a-col :span="8">
+                            <p>卡片标题：{{ item.articleTitle }}</p>
+                        </a-col>
+                        <a-col :span="16">
+                            <p style="display: flex">
+                                <span style="width:70px;flex: none;">卡片摘要：</span>
+                                <span> {{ item.articleDesc }}</span>
+                            </p>
+                        </a-col>
+                    </a-row>
+                    <a-row class="grid-demo">
+                        <a-col :span="24">
+                            <p style="display: flex">
+                                <span style="width:70px">安卓链接：</span>
+                                <span>{{ item.articleAndroidUrl }}</span>
+                            </p>
+                        </a-col>
+                    </a-row>
+                    <a-row class="grid-demo">
+                        <a-col :span="24">
+                            <p style="display: flex">
+                                <span style="width:70px">IOS链接：</span>
+                                <span>{{ item.articleIosUrl }}</span>
+                            </p>
+                        </a-col>
+                    </a-row>
+                </template>
+                <template v-else>
+                    <div class="sendContent">
+                        <span class="spanTitle">发送内容：</span>
+                        <span class="content">
+                            <a-typography-text :ellipsis="{
+                                rows: 2,
+                                expandable: true,
+                                // showTooltip: true,
+                                showTooltip: {
+                                    type: 'popover',
+                                    props: {
+                                        style: { maxWidth: `600px` },
+                                    },
                                 },
-                            },
-                        }">
-                            {{ item.Content }}
-                        </a-typography-text>
-                    </span>
-                </p>
+                            }">
+                                {{ item.Content }}
+                            </a-typography-text>
+                        </span>
+                    </div>
+                    <div class="sengImg">
+                        <span class="spanTitle">发送图片：</span>
+                        <ul class="imgList">
+                            <li v-for="imgItem in item.imageList" :key="imgItem.uid" class="imgCon">
+                                <img :src="imgItem.url" :alt="imgItem.name">
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+
                 <a-row class="grid-demo">
                     <a-col :span="8">
                         <span>发送成功/总人数：{{ item.TargetUserSucessCount }} /
@@ -178,7 +206,30 @@ const getDataList = async () => {
     try {
         const { data, count } = await BatchMessageApi.getHistory(params);
         const list = data || [];
-        list.forEach((item: any) => { });
+        list.forEach((item: any, index: number) => {
+            if (index % 2 === 0) {
+                item.ContentType = 110
+                item.imageList = [
+
+                    {
+                        uid: 'jkhjkhjkhj2',
+                        name: '20200717-103937.png',
+                        url: "https://imcpftestv2.eastmoney.com/IMAPI/img/akgvtwcllx/a7f7e8540db242afac8910e077af1442back.jpg",
+                    },
+                    {
+                        uid: 'assdasdas',
+                        name: '20200717-dd.png',
+                        url: "https://imcpftestv2.eastmoney.com/IMAPI/img/akgvtwcllx/068bed0795ca4308bbc58eef426b70b2%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20231215165505.png",
+                    },
+                ]
+            } else {
+                item.ContentType = 111
+                item.articleTitle = '发射点发射点发顺丰发撒旦萨芬十大发射点发'
+                item.articleDesc = '阿斯蒂芬撒旦发射点发射点发射点发射点发士大夫发发生发撒打发是访问阿斯顿的v啊士大'
+                item.articleAndroidUrl = 'sadfasdfasdfasdfsadfasfsadfsd'
+                item.articleIosUrl = 'asdfdfasfdfasdfasdfsdafa'
+            }
+        });
         dataList.value = list;
         pagination.total = count;
     } catch (error) {
@@ -254,36 +305,4 @@ defineExpose({
 </script>
 
 <style lang="less" scoped>
-:deep(.list-demo-item) {
-    .arco-list-item-main {
-        margin-right: 20px;
-    }
-}
-
-.grid-demo .arco-col {
-    height: 32px;
-}
-
-.sendContent {
-    margin-top: 5px;
-
-    span {
-        display: inline-block;
-        vertical-align: top;
-    }
-
-    .content {
-        width: calc(100% - 70px);
-        word-break: break-all;
-    }
-}
-
-.actionCon {
-    height: 100%;
-
-    .bot {
-        text-align: right;
-        margin-top: 20px;
-    }
-}
 </style>

@@ -5,7 +5,7 @@ declare module 'vue-router' {
     // options
     roles?: string[];
     // every route must declare
-    requiresAuth: boolean; // need login
+    requiresAuth?: boolean; // need login
     icon?: string;
     locale?: string;
     // menu select key
