@@ -1,10 +1,10 @@
 .batchContainer {
     padding: 10px 15px;
+
     .operations {
         display: flex;
     }
 }
-
 
 :deep(.list-demo-item) {
     .arco-list-item-main {
@@ -65,3 +65,111 @@
 }
 
 
+.arco-modal.previewModal {
+    .arco-modal-header {
+        background-color: #eb5508;
+    }
+
+    .arco-modal-body {
+        background-color: #f7f7f7;
+        height: 600px;
+    }
+
+    .timeTitle {
+        margin: 0px 0 15px;
+        font-size: 12px;
+        font-family: "Helvetica Neue";
+        color: #817d7d;
+        text-align: center;
+    }
+
+    .note {
+        margin: 15px auto 0px;
+        width: 240px;
+        font-size: 14px;
+        font-family: "Helvetica Neue";
+        color: #817d7d;
+        text-align: center;
+    }
+
+    .previewCon {
+        position: relative;
+
+        // background-color: #0f0f0f;
+        .headImg.arco-avatar {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        .richCon,
+        .cardCon {
+            margin-left: 45px;
+            background-color: #fff;
+            padding: 10px 10px 5px;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        .richCon .textContent {
+            word-break: break-all;
+        }
+
+        .richCon .imgList {
+            margin-top: 16px;
+            display: flex;
+
+            .imgCon {
+                flex: 1;
+                text-align: center;
+                max-height: 150px;
+            }
+
+            .imgCon img {
+                max-height: 100%;
+                max-width: 99%;
+            }
+        }
+
+        .cardCon .ArticleTitle {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .cardCon .articleCenter {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cardCon .ArticleDesc {
+            font-size: 12px;
+            color: grey;
+            margin-bottom: 15px;
+            max-height: 100px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .cardCon .imgCon {
+            width: 50px;
+            margin: 5px 8px;
+        }
+
+        .cardCon .source {
+            border-top: 1px solid #f7f7f7;
+            font-size: 12px;
+            color: grey;
+
+            .footTitle {
+                display: inline-block;
+                margin: 3px 10px 0;
+                vertical-align: bottom;
+            }
+
+        }
+
+
+
+    }
+
+}

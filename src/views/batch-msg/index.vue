@@ -1,3 +1,9 @@
+<!--
+ * @Date: 2023-07-25 09:56:43
+ * @LastEditors: zbx
+ * @LastEditTime: 2023-12-21 09:16:24
+ * @descript: 文件描述
+-->
 <template>
     <div class="batchContainer">
         <a-tabs :type="'line'" :size="'medium'" lazy-load v-model:active-key="curKey" default-active-key="draft"

@@ -1,13 +1,13 @@
 <!--
  * @Date: 2023-07-28 15:20:33
  * @LastEditors: zbx
- * @LastEditTime: 2023-09-13 18:01:05
+ * @LastEditTime: 2023-12-21 14:48:22
  * @descript: 文件描述
 -->
 <template>
     <div :class="computedClass" class="messageItemCon">
         <a-avatar :size="34" :imageUrl="getAvatar(msgObj)"
-            v-if="[101, 102, 103, 105].includes(msgObj.contentType)"></a-avatar>
+            v-if="[101, 102, 103, 105, 110, 111].includes(msgObj.contentType)"></a-avatar>
         <div class="msgContain">
             <p class="timeTitle" v-if="showTime">
                 {{
@@ -27,8 +27,8 @@
                     <a-image style="max-width: 100%;" :src="msgObj.content.Text" :fit="'contain'" />
                 </p>
                 <!-- <span class="downLoadBtn" title="下载图片" @click="downloadIamge(msgObj)" v-show="msgObj.content.Text">
-          <icon-to-bottom />
-        </span> -->
+                    <icon-to-bottom />
+                </span> -->
                 <span class="statusCon" :class="statusClass[msgObj.msgStatus]"></span>
             </div>
             <!-- 视频 -->
@@ -51,6 +51,30 @@
             <div class="msgContent tipsCon" v-if="[104].includes(msgObj.contentType)">
                 <p>{{ formatChatTime(msgObj.sendDateTime) }}</p>
             </div>
+            <div class="msgContent cardCon" v-if="msgObj.contentType === 111">
+                <div class="ArticleTitle">{{ msgObj.content.articleTitle }}</div>
+                <div class="articleCenter">
+                    <div class="ArticleDesc">{{ msgObj.content.articleDesc }}</div>
+                    <div class="imgCon">
+                        <a-avatar :size="40" :image-url="msgObj.content.articleLogo || articleImg" shape="square"
+                            class=" logoIcon"></a-avatar>
+                    </div>
+                </div>
+                <div class="source">
+                    <a-avatar :size="18" :image-url="logoUrl" class="logoIcon"></a-avatar>
+                    <span class="footTitle">东方财富</span>
+                </div>
+            </div>
+            <div class="msgContent richCon" v-if="msgObj.contentType === 110">
+                <div class="textContent">
+                    {{ msgObj.content.Text }}
+                </div>
+                <ul class="imgList">
+                    <li v-for="imgItem in msgObj.content.imageList" :key="imgItem.uid" class="imgCon">
+                        <img :src="imgItem.url" :alt="imgItem.name">
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -63,6 +87,8 @@ import { Pagination, Options, AnyObject } from '@/types/global';
 import { transferTxtToEmotion, formatChatTime, copyText, downloadImgFromLink, formatDate } from '@/utils/tools';
 import { msgTypes, RealMsg } from '@/store/msgParse';
 import MsgQuto from './msgQuto.vue';
+import articleImg from "@/assets/images/articleImg.png"
+import logoUrl from "@/assets/images/logo.png"
 
 const props = defineProps(['msgObj', 'showTime']);
 const comStore = useComStore();
@@ -223,7 +249,7 @@ const withDrawMsg = (msg: RealMsg) => {
     color: #030303;
 
     &.tStaff {
-        .arco-avatar {
+        &>.arco-avatar {
             position: absolute;
             right: -45px;
             top: 0;
@@ -240,7 +266,8 @@ const withDrawMsg = (msg: RealMsg) => {
     }
 
     &.tleft {
-        .arco-avatar {
+
+        &>.arco-avatar {
             position: absolute;
             left: -45px;
             top: 0;
@@ -394,6 +421,84 @@ const withDrawMsg = (msg: RealMsg) => {
             &.fail {
                 background: url('../../../assets/images/allbgs.png') no-repeat 0px -28px;
             }
+        }
+
+
+
+        &.richCon,
+        &.cardCon {
+            width: 250px;
+            max-width: 60%;
+            text-align: left;
+            padding: 5px 12px;
+            line-height: 26px;
+            white-space: pre-wrap;
+            background-color: #fff;
+            border: 1px solid #dbd8d8;
+        }
+
+        &.richCon {
+            .imgList {
+                margin-top: 16px;
+                display: flex;
+
+                .imgCon {
+                    flex: 1;
+                    text-align: center;
+                    max-height: 150px;
+                }
+
+                .imgCon img {
+                    max-height: 100%;
+                    max-width: 99%;
+                }
+            }
+
+            .textContent {
+                word-break: break-all;
+            }
+        }
+
+
+        &.cardCon {
+
+            .ArticleTitle {
+                font-weight: bold;
+                font-size: 16px;
+            }
+
+            .articleCenter {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .ArticleDesc {
+                font-size: 12px;
+                color: grey;
+                margin-bottom: 15px;
+                max-height: 100px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            .imgCon {
+                width: 50px;
+                margin: 5px 8px;
+            }
+
+            .source {
+                border-top: 1px solid #f7f7f7;
+                font-size: 12px;
+                color: grey;
+
+                .footTitle {
+                    display: inline-block;
+                    margin: 3px 10px 0;
+                    vertical-align: bottom;
+                }
+
+            }
+
         }
     }
 }

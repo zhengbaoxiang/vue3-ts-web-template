@@ -34,25 +34,25 @@
                 <span>{{ pageForm.SendDateTime }}</span>
             </a-form-item>
 
-            <a-form-item field="ContentType" label="发送方式" :rules="[{ required: true, message: '请选择发送方式' }]">
-                <a-radio-group v-model="pageForm.ContentType">
+            <a-form-item field="BatchMessageType" label="发送方式" :rules="[{ required: true, message: '请选择发送方式' }]">
+                <a-radio-group v-model="pageForm.BatchMessageType">
                     <a-radio :value="110">消息通知</a-radio>
                     <a-radio :value="111">活动卡片</a-radio>
                 </a-radio-group>
             </a-form-item>
 
-            <template v-if="pageForm.ContentType == 110">
+            <template v-if="pageForm.BatchMessageType == 110">
                 <a-form-item field="Text" label="发送内容" :rules="{ required: true, message: '请输入发送内容' }">
                     <a-textarea :readonly="readonly" v-model="pageForm.Text" :max-length="300" show-word-limit :auto-size="{
                         minRows: 5,
                         maxRows: 11,
                     }" />
                 </a-form-item>
-                <a-form-item field="imageList" label="发送图片">
+                <a-form-item field="ImageList" label="发送图片">
                     <a-upload :disabled="readonly" accept=".jpg,.png,.jpeg,.bmp" action="/" :auto-upload="false" :limit="2"
                         list-type="picture-card" image-preview ref="uploadImgRef" @before-upload="beforeUploadImg"
-                        @before-remove="beforeRemoveImg" v-model:file-list="pageForm.imageList"
-                        :default-file-list="pageForm.imageList" :show-remove-button="viewType !== 'view'">
+                        @before-remove="beforeRemoveImg" v-model:file-list="pageForm.ImageList"
+                        :default-file-list="pageForm.ImageList" :show-remove-button="viewType !== 'view'">
                     </a-upload>
 
                     <template #extra>
@@ -61,22 +61,33 @@
                 </a-form-item>
             </template>
 
-            <template v-if="pageForm.ContentType == 111">
-                <a-form-item field="articleTitle" label="卡片标题" :rules="{ required: true, message: '请输入发送标题' }">
-                    <a-input v-model="pageForm.articleTitle" :readonly="readonly" :max-length="20" show-word-limit />
+            <template v-if="pageForm.BatchMessageType == 111">
+                <a-form-item field="ArticleTitle" label="卡片标题" :rules="{ required: true, message: '请输入发送标题' }">
+                    <a-input v-model="pageForm.ArticleTitle" :readonly="readonly" :max-length="20" show-word-limit />
                 </a-form-item>
-                <a-form-item field="articleDesc" label="卡片摘要">
-                    <a-textarea :readonly="readonly" v-model="pageForm.articleDesc" :max-length="40" show-word-limit
+                <a-form-item field="ArticleDesc" label="卡片摘要">
+                    <a-textarea :readonly="readonly" v-model="pageForm.ArticleDesc" :max-length="40" show-word-limit
                         :auto-size="{
                             minRows: 5,
                             maxRows: 11,
                         }" />
                 </a-form-item>
-                <a-form-item field="articleAndroidUrl" label="链接-安卓" :rules="{ required: true, message: '请输入链接' }">
-                    <a-input v-model="pageForm.articleAndroidUrl" :readonly="readonly" show-word-limit />
+                <a-form-item field="ArticleAndroidUrl" label="链接-安卓" :rules="{ required: true, message: '请输入链接' }">
+                    <a-input v-model="pageForm.ArticleAndroidUrl" :readonly="readonly" show-word-limit />
                 </a-form-item>
-                <a-form-item field="articleIosUrl" label="链接-IOS" :rules="{ required: true, message: '请输入链接' }" v>
-                    <a-input v-model="pageForm.articleIosUrl" :readonly="readonly" show-word-limit />
+                <a-form-item field="ArticleIosUrl" label="链接-IOS" :rules="{ required: true, message: '请输入链接' }" v>
+                    <a-input v-model="pageForm.ArticleIosUrl" :readonly="readonly" show-word-limit />
+                </a-form-item>
+                <a-form-item field="ArticleLogo" label="卡片Logo">
+                    <a-upload :disabled="readonly" accept=".jpg,.png,.jpeg,.bmp" action="/" :auto-upload="false" :limit="1"
+                        list-type="picture-card" image-preview ref="uploadImgRef2" @before-upload="beforeUploadLogo"
+                        @before-remove="beforeRemoveImg" @change="onFLogoChange" :default-file-list="pageForm.LogoList"
+                        :show-remove-button="viewType !== 'view'">
+                    </a-upload>
+
+                    <template #extra>
+                        <span>请点击上传文章logo，支持jpg、png、bmp格式。</span>
+                    </template>
                 </a-form-item>
             </template>
         </a-form>
@@ -230,7 +241,7 @@ const downLoadTemp = async () => {
     handleBLob(res);
 };
 
-// 文件上传逻辑
+// 图片上传逻辑
 const beforeUploadImg = async (file: Blob) => {
     console.log('-before-upload-file>', file);
 
@@ -253,8 +264,8 @@ const beforeUploadImg = async (file: Blob) => {
             name: data.FileName,
             url: data.Url
         }
-        pageForm.value.imageList.push(temp)
-        console.log('imageList', pageForm.value.imageList)
+        pageForm.value.ImageList.push(temp)
+        console.log('ImageList', pageForm.value.ImageList)
         return true;
     })
 }
@@ -262,6 +273,36 @@ const beforeRemoveImg = (fileItem: any) => {
     console.log('-beforeRemove>', fileItem);
     return Promise.resolve(true);
 };
+
+// logo上传逻辑
+const beforeUploadLogo = async (file: Blob) => {
+    fileObjToStr(file, async (imgStr: string) => {
+        const params = {
+            base64Content: imgStr.split(";base64,")[1],  //  base64
+            imageName: file['name'],
+        }
+        const { data } = await IMAPI.ImageUpLoad(params)
+        Message.success('上传成功');
+        // const temp = {
+        //     uid: data.MD5,
+        //     name: data.FileName,
+        //     url: data.Url
+        // }
+        pageForm.value.ArticleLogo = data.Url
+        return Promise.resolve(true);
+    })
+    return true
+}
+const beforeRemoveLogo = (fileItem: any) => {
+    pageForm.value.ArticleLogo = null;
+    return Promise.resolve(true);
+};
+const onFLogoChange = (_: any, currentFile: AnyObject) => {
+    console.info(currentFile);
+    currentFile.status = 'done';
+};
+
+
 
 
 // 预览
@@ -283,14 +324,16 @@ const toAdd = (row: AnyObject) => {
         ...row,
         State: 0,
         Content: '', // 拼接的消息内容
-        ContentType: 110, // 111 //  消息类型：110富文本;111卡片
+        BatchMessageType: 110, // 111 //  消息类型：110富文本;111卡片
         Text: '', // 发送文本
-        imageList: [],// 图片
-        articleTitle: '',// 标题
-        articleDesc: '',// 摘要
-        articleIosUrl: '',// ios链接
-        articleAndroidUrl: '',// 安卓链接
+        ImageList: [],// 图片
+        ArticleTitle: '',// 标题
+        ArticleDesc: '',// 摘要
+        ArticleIosUrl: '',// ios链接
+        ArticleAndroidUrl: '',// 安卓链接
+        ArticleLogo: '',// 安卓链接
         FileList: [],
+        LogoList: [],
     };
     formRef.value?.resetFields();
     visible.value = true;
@@ -307,8 +350,9 @@ const toEdit = (row: AnyObject) => {
     pageForm.value = {
         id: row.BatchMessageId,
         ...row,
-        ContentType: row.ContentType || 110,
+        BatchMessageType: row.BatchMessageType || 110,
         Text: row.Text || row.Content,
+        ImageList: row.ImageList,
         FileList: [
             {
                 uid: row.FileId,
@@ -316,13 +360,13 @@ const toEdit = (row: AnyObject) => {
                 url: url,
             },
         ],
-        imageList: row.imageList || [
+        LogoList: [
             {
-                uid: 'jkhjkhjkhj2',
-                name: '20200717-103937.png',
-                url: "https://imcpftestv2.eastmoney.com/IMAPI/img/akgvtwcllx/a7f7e8540db242afac8910e077af1442back.jpg",
+                uid: 'logo_id',
+                name: 'logo',
+                url: row.ArticleLogo,
             },
-        ]
+        ],
     };
     // this.$refs.pageForm.resetFields();
     formRef.value?.resetFields();
@@ -340,8 +384,9 @@ const toView = (row: AnyObject) => {
     pageForm.value = {
         id: row.BatchMessageId,
         ...row,
-        ContentType: row.ContentType || 110,
+        BatchMessageType: row.BatchMessageType || 110,
         Text: row.Text || row.Content,
+        ImageList: row.ImageList,
         FileList: [
             {
                 uid: row.FileId,
@@ -349,7 +394,13 @@ const toView = (row: AnyObject) => {
                 url: url,
             },
         ],
-        imageList: row.imageList || []
+        LogoList: [
+            {
+                uid: 'logo_id',
+                name: 'logo',
+                url: row.ArticleLogo,
+            },
+        ],
     };
     // this.$refs.pageForm.resetFields();
     formRef.value?.resetFields();
@@ -369,17 +420,18 @@ const closePage = () => {
 
 function getContent(p) {
     let obj = {}
-    if (p.ContentType === 111) {
+    if (p.BatchMessageType === 111) {
         obj = {
-            articleTitle: p.Text,
-            articleDesc: p.Text,
-            articleIosUrl: p.Text,
-            articleAndroidUrl: p.Text,
+            articleTitle: p.ArticleTitle,
+            articleDesc: p.ArticleDesc,
+            articleIosUrl: p.ArticleIosUrl,
+            articleAndroidUrl: p.ArticleAndroidUrl,
+            articleLogo: p.ArticleLogo,
         }
     } else {
         obj = {
             Text: p.Text,
-            imageList: p.imageList || []
+            imageList: p.ImageList || []
         }
     }
     return JSON.stringify(obj)

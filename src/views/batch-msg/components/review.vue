@@ -1,7 +1,7 @@
 <!--
  * @Date: 2023-07-25 10:54:07
  * @LastEditors: zbx
- * @LastEditTime: 2023-12-19 13:05:44
+ * @LastEditTime: 2023-12-21 11:20:11
  * @descript: 文件描述
 -->
 <template>
@@ -72,15 +72,15 @@
                     </a-col>
                 </a-row>
 
-                <template v-if="item.ContentType === 111">
+                <template v-if="item.BatchMessageType === 111">
                     <a-row class="grid-demo">
                         <a-col :span="12">
-                            <p>卡片标题：{{ item.articleTitle }}</p>
+                            <p>卡片标题：{{ item.ArticleTitle }}</p>
                         </a-col>
                         <a-col :span="12">
                             <p style="display: flex">
                                 <span style="width: 70px;flex: none;">卡片摘要： </span>
-                                <span> {{ item.articleDesc }}</span>
+                                <span> {{ item.ArticleDesc }}</span>
                             </p>
                         </a-col>
                     </a-row>
@@ -88,13 +88,13 @@
                         <a-col :span="12">
                             <p style="display: flex;flex: none;">
                                 <span style="width:70px">安卓链接：</span>
-                                <span>{{ item.articleAndroidUrl }}</span>
+                                <span>{{ item.ArticleAndroidUrl }}</span>
                             </p>
                         </a-col>
                         <a-col :span="12">
                             <p style="display: flex;flex: none;">
                                 <span style="width:70px">IOS链接：</span>
-                                <span>{{ item.articleIosUrl }}</span>
+                                <span>{{ item.ArticleIosUrl }}</span>
                             </p>
                         </a-col>
                     </a-row>
@@ -114,14 +114,14 @@
                                     },
                                 },
                             }">
-                                {{ item.Content }}
+                                {{ item.Text }}
                             </a-typography-text>
                         </span>
                     </div>
                     <div class="sengImg">
                         <span class="spanTitle">发送图片：</span>
                         <ul class="imgList">
-                            <li v-for="imgItem in item.imageList" :key="imgItem.uid" class="imgCon">
+                            <li v-for="imgItem in item.ImageList" :key="imgItem.uid" class="imgCon">
                                 <img :src="imgItem.url" :alt="imgItem.name">
                             </li>
                         </ul>
@@ -231,28 +231,15 @@ const getDataList = async () => {
         const { data, count } = await BatchMessageApi.getAuditList(params);
         const list = data || [];
         list.forEach((item: any, index: number) => {
-            if (index % 2 === 0) {
-                item.ContentType = 110
-                item.imageList = [
+            item.ImageList = item.ImageList || []
+            item.ImageList = item.ImageList.map(item => {
+                return {
+                    uid: item.Uid,
+                    name: item.Name,
+                    url: item.Url,
+                }
+            })
 
-                    {
-                        uid: 'jkhjkhjkhj2',
-                        name: '20200717-103937.png',
-                        url: "https://imcpftestv2.eastmoney.com/IMAPI/img/akgvtwcllx/a7f7e8540db242afac8910e077af1442back.jpg",
-                    },
-                    {
-                        uid: 'assdasdas',
-                        name: '20200717-dd.png',
-                        url: "https://imcpftestv2.eastmoney.com/IMAPI/img/akgvtwcllx/068bed0795ca4308bbc58eef426b70b2%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20231215165505.png",
-                    },
-                ]
-            } else {
-                item.ContentType = 111
-                item.articleTitle = '发射点发射点发顺丰发撒旦萨芬十大发射点发'
-                item.articleDesc = '阿斯蒂芬撒旦发射点发射点发射点发射点发士大夫发发生发撒打发是访问阿斯顿的v啊士大'
-                item.articleAndroidUrl = 'sadfasdfasdfasdfsadfasfsadfsd'
-                item.articleIosUrl = 'asdfdfasfdfasdfasdfsdafa'
-            }
         });
         dataList.value = list;
         pagination.total = count;
@@ -362,5 +349,3 @@ defineExpose({
 });
 </script>
 
-<style lang="less" scoped>
-</style>
