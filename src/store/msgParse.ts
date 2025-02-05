@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-08-01 17:53:23
  * @LastEditors: zbx
- * @LastEditTime: 2023-12-15 15:16:40
+ * @LastEditTime: 2023-12-21 14:18:36
  * @descript: 文件描述
  */
 import { defineComponent, ref, computed, reactive, onBeforeMount } from 'vue';
@@ -17,6 +17,8 @@ export const msgTypes = {
     m_time: 104,
     m_quto: 105,
     m_withdraw: 903,
+    m_richText: 110,
+    m_artical: 111,
 }
 export const msgStatus = {
     preSend: 0, // 预发送
@@ -76,6 +78,7 @@ export interface Content {
     articleDesc?: string,  // 111 卡片摘要
     articleIosUrl?: string,  // 111 卡片链接 ios
     articleAndroidUrl?: string,  // 111 卡片链接 安卓
+    articleLogo?: string,  // 111 卡片链接 安卓
 
 }
 // 晓文
@@ -270,7 +273,6 @@ class MsgParse {
             replaceMsg: Msg.ReplaceMsg
         }
 
-        // console.log("--realMsg->", realMsg);
         switch (realMsg.contentType) {
             case msgTypes.m_text:
                 return realMsg
@@ -285,6 +287,14 @@ class MsgParse {
                 return realMsg
                 break
             case msgTypes.m_withdraw:
+                return realMsg
+                break
+            case msgTypes.m_richText:
+                return realMsg
+                break
+            case msgTypes.m_artical:
+                console.log("--realMsg->", realMsg);
+
                 return realMsg
                 break
             default:
@@ -320,6 +330,8 @@ class MsgParse {
             '102': '[图片]',
             '103': '[视频]',
             '105': content.Text,
+            '110': content.Text,
+            '111': '[文章]',
             '903': msg.ReplaceMsg
         }
         return typeObj[contentType] || ''
